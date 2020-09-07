@@ -1,0 +1,95 @@
+module.exports = {
+  root: true,
+  env: {
+    browser: true,
+    node: true,
+  },
+  parserOptions: {
+    parser: 'babel-eslint',
+    sourceType: 'module',
+  },
+  extends: [
+    'airbnb-base',
+    '@nuxtjs',
+    'prettier',
+    'plugin:nuxt/recommended',
+    'plugin:vue/recommended',
+    'prettier/vue',
+    'plugin:prettier/recommended',
+  ],
+  globals: {
+    $nuxt: true,
+  },
+  plugins: ['prettier'],
+  // rules here
+  rules: {
+    // 'vue/component-name-in-template-casing': ['error', 'PascalCase'],
+    'comma-dangle': [1, 'always-multiline'],
+    'no-underscore-dangle': 0,
+    'no-console': 0,
+    'prettier/prettier': [0, 'replace'],
+    'no-param-reassign': [
+      2,
+      {
+        props: true,
+        ignorePropertyModificationsFor: ['state', 'acc', 'e', 'ctx', 'req', 'request', 'res', 'response', '$scope'],
+      },
+    ],
+  },
+};
+
+// 'no-param-reassign': ['error',
+//       {
+//         props: true,
+//         ignorePropertyModificationsFor: ['state', 'acc', 'e', 'ctx', 'req', 'request', 'res', 'response', '$scope'],
+//       },
+//     ],
+//     'comma-dangle': [
+//       'error',
+//       {
+//         arrays: 'never',
+//         objects: 'never',
+//         imports: 'never',
+//         exports: 'never',
+//         functions: 'never',
+//       },
+//     ],
+//     'no-console': 0,
+//     'no-console': 'off',
+//     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+//     'node/exports-style': ['error', 'module.exports'],
+//     'node/file-extension-in-import': 'off',
+//     'node/prefer-global/buffer': ['error', 'always'],
+//     'node/prefer-global/console': ['error', 'always'],
+//     'node/prefer-global/process': ['error', 'always'],
+//     'node/prefer-global/url-search-params': ['error', 'always'],
+//     'node/prefer-global/url': ['error', 'always'],
+//     'node/prefer-promises/dns': 'off',
+//     'node/prefer-promises/fs': 'off',
+//     'no-nested-ternary': 0,
+//     'object-curly-spacing': 0,
+//     'padded-blocks': 0,
+//     'eol-last': 0,
+//     'no-trailing-spaces': 0,
+//     'no-multiple-empty-lines': 0,
+//     allowTernary: 0,
+//     indent: [0, 'tab'],
+//     'linebreak-style': 0,
+//     'no-tabs': 0,
+//     'no-underscore-dangle': 0,
+//     'no-unused-expressions': [
+//       2,
+//       {
+//         allowShortCircuit: true,
+//         allowTernary: true,
+//       },
+//     ],
+//     quotes: [1, 'single'],
+//     'max-len': 0,
+//     'space-before-function-paren': 0,
+//     'prettier/prettier': [
+//       1,
+//       {
+//         'no-console': 0,
+//       },
+//     ],
