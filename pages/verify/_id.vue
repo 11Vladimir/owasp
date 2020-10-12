@@ -5,13 +5,14 @@
       <a-layout id="components-layout-demo-side" style="min-height: 75vh" class="radius">
         <a-layout-content style="margin: 0 16px">
           <a-breadcrumb style="margin: 16px 0">
-            <h1>Подтверждение прав владения сайтом {{ sate.websiteHost }}</h1>
+            <h1>Подтверждение прав владения сайтом {{ site.title }}</h1>
+
             <p>
               Прежде, чем получить возможность сканирования сайта на уязвимости, Вам необходимо подтвердить, что вы
               владеете данным сайтом. Мы можем предложить два способа подтверждения.
             </p>
           </a-breadcrumb>
-          <div class="row" v-model="verifyOn">
+          <div class="row">
             <div class="column column-5">
               <a-card class="radius">
                 <div class="container2">
@@ -22,14 +23,14 @@
                   <br />
                   <p>
                     Добавьте TXT запись в DNS <br />
-                    IN TXT "{{ sate._id }}"
+                    IN TXT "{{ site.key }}"
                   </p>
                   <br />
                   <div v-if="verefity1">
                     <p class="onVerifity">Права владения сайтом подтверждены!</p>
                   </div>
                   <div v-else>
-                    <a-button type="primary">Подтвердить</a-button>
+                    <a-button type="primary" v-on:click="verifyDns()">Подтвердить</a-button>
                   </div>
                 </div>
               </a-card>
@@ -44,14 +45,14 @@
                   <br />
                   <p>
                     Создайте файл в каталоге веб-сервера <br />
-                    /verify/{{ sate._id }}.html
+                    /verify/{{ site.key }}.html
                   </p>
                   <br />
                   <div v-if="verefity2">
                     <p class="onVerifity">Права владения сайтом подтверждены!</p>
                   </div>
                   <div v-else>
-                    <a-button type="primary" v-on:click="verifySite()">Подтвердить</a-button>
+                    <a-button type="primary" v-on:click="verifyWeb()">Подтвердить</a-button>
                   </div>
                 </div>
               </a-card>
@@ -66,100 +67,135 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
     data() {
       return {
-        sate: {
-          scanReports: 10,
-          status: false,
-          websiteTitle: 'ServisePipe',
-          websiteUrl: 'https://servicepipe.ru/',
-          websiteHost: 'servicepipe.ru',
-          _id: 'b4fde4dd05ea65f40ea620507c5b4e33add75a171d1f59d03fde68e5641a4827',
-        },
+        site: {},
         verefity1: false,
         verefity2: false,
-        iconsColor1: '',
-        iconsColor2: '',
+        iconsColor1: 'outlined',
+        iconsColor2: 'outlined',
       };
     },
     methods: {
-      validate({ params }) {
-        return /^\d+$/.test(params.id);
+      getSite() {
+        return axios
+          .get(`https://owqsp-nuxt.firebaseio.com/sites/${this.$router.history.current.params.id}.json`)
+          .then(res => {
+            console.log('res', res);
+
+            this.site = { ...res.data, id: res.data.id };
+            return;
+          })
+          .catch(e => console.log(e));
       },
-      async verifySite() {
+
+      // getSite(contex) {
+      //   return axios
+      //     .get(`https://owqsp-nuxt.firebaseio.com/sites/${contex.params.id}.json`)
+      //     .then(res => {
+      //       console.log('from verify id', res);
+      //       return {
+      //         site: { ...res.data, id: contex.params.id },
+      //       };
+      //     })
+      //     .catch(e => contex.error(e));
+      // },
+      // Подученние данных сайта
+      //   async getSite() {
+      //     try {
+      //       const url = 'http://185.79.117.244:4004/api/modules/scanner/info';
+      //       const payload = {
+      //         target: '5f564a191a7387279572cea7', // сделать динамическую переменную
+      //       };
+      //       const answer = await this.$axios({
+      //         url,
+      //         method: 'POST',
+      //         data: payload,
+      //         validateStatus: false,
+      //       });
+      //       console.log('getSite answer', answer);
+      //       const { data } = answer;
+      //       if (data.statusCode !== 200 && data.statusCode !== 201) throw new Error(data.serverAnswer);
+      //       const result = data.serverAnswer;
+      //       this.site = result;
+      //       console.log('getSite result', result);
+      //       return result;
+      //     } catch (err) {
+      //       console.error(`❌ [ERROR] ${err}`);
+      //       return err;
+      //     }
+      //   },
+
+      // Проверка по HTML
+      async verifyWeb() {
         try {
           const url = '/api/modules/scanner/exist-url';
           const payload = {
-            www: `${this.sate.websiteUrl}/verify/${this.sate._id}.html`, // www: 'https://www.toppenoplast.ru/',
+            www: `${this.site.url}/verify/${this.site.key}.html`, //http://u91212.test-handyhost.ru/verify/cc0c1b00-7927-4bfe-894d-faa708b6f588.html
           };
-
           const answer = await this.$axios({
             url: `${this.$serverAPI}${url}`,
             method: 'POST',
             data: payload,
             validateStatus: false,
           });
-
-          console.log('answer', answer);
+          console.log('verifyWeb answer', answer);
           const { data } = answer;
-
           if (data.statusCode == 200) {
             this.verefity2 = true;
+            this.iconsColor2 = 'twoTone';
+            return this.iconsColor2;
           }
-
           if (data.statusCode !== 200 && data.statusCode !== 201) throw new Error(data.serverAnswer);
-
           const result = data.serverAnswer;
-          console.log('result', result);
-
+          console.log('verifyWeb result', result);
           return result;
         } catch (err) {
           console.error(`❌ [ERROR] ${err}`);
           return err;
         }
       },
-
-      verifyOn() {
-        if (this.verefity1 == true) {
-          this.iconsColor1 = 'twoTone';
-        }
-        if (this.verefity2 == true) {
-          this.iconsColor2 = 'twoTone';
-        }
-        return this.iconsColor1, this.iconsColor2;
-      },
+      //   // Изменение данных сайта с подтвержденными правами
+      //   async verifyData() {
+      //     if (this.verefity1 == false || this.verefity2 == false) {
+      //       console.log(222);
+      //       try {
+      //         const url = 'http://185.79.117.244:4004/api/modules/scanner/update';
+      //         const payload = {
+      //           target: '5f46a2d7db855f065ccd8dc6', // сделать динамическую переменную
+      //           scanReports: 0,
+      //           status: true,
+      //         };
+      //         const answer = await this.$axios({
+      //           url,
+      //           method: 'PATCH',
+      //           data: payload,
+      //           validateStatus: false,
+      //         });
+      //         console.log('verifyData answer', answer);
+      //         const { data } = answer;
+      //         if (data.statusCode !== 200 && data.statusCode !== 201) throw new Error(data.serverAnswer);
+      //         const result = data.serverAnswer;
+      //         console.log('verifyData result', result);
+      //         const id = this.idArray.push(result);
+      //         console.log(this.idArray);
+      //         console.log(id);
+      //         return result;
+      //       } catch (err) {
+      //         console.error(`❌ [ERROR] ${err}`);
+      //         return err;
+      //       }
+      //     }
+      //   },
     },
 
-    async statusPost() {
-      console.log(this.sate.status);
-      if (this.verefity1 == true || this.verefity2 == true) {
-        const payload = {
-          status: true,
-        };
-      }
-      try {
-        const url = 'http://185.79.117.244:4004/api/modules/scanner/send';
-        const id = `${this.sate._id}`;
+    beforeMount() {
+      this.getSite();
 
-        const answer = await this.$axios({
-          url,
-          method: 'POST',
-          data: payload,
-          validateStatus: false,
-        });
-        console.log('answer', answer);
-        const { data } = answer;
-        if (data.statusCode !== 200 && data.statusCode !== 201) throw new Error(data.serverAnswer);
-
-        const result = data.serverAnswer;
-        console.log('result', result);
-
-        return result;
-      } catch (err) {
-        console.error(`❌ [ERROR] ${err}`);
-        return err;
-      }
+      // this.verifyData();
     },
   };
 </script>
@@ -258,8 +294,5 @@
       width: auto;
       float: none;
     }
-  }
-
-  .ant-steps {
   }
 </style>

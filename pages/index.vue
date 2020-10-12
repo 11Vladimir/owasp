@@ -14,13 +14,15 @@
             <a-card class="radius">
               <form>
                 <div class="row">
-                  <div class="column column-4">
-                    <p>{{ index + 1 }}. {{ site.websiteTitle }}</p>
+                  <div class="column column-10">
+                    <div class="column column-5">
+                      <p>{{ index + 1 }} {{ site.title }}</p>
+                    </div>
+                    <div class="column column-4">
+                      <p>{{ site.host }}</p>
+                    </div>
                   </div>
-                  <div class="column column-4">
-                    <p>URL сайта: {{ site.websiteHost }}</p>
-                  </div>
-                  <div class="column column-3">
+                  <div class="column column-2">
                     <a-button type="link"> Удалить сайт </a-button>
                   </div>
                 </div>
@@ -28,31 +30,35 @@
 
                 <div v-if="site.status">
                   <div class="row">
-                    <div class="column column-4">
-                      <a-cascader :options="options" placeholder="Запуск проверки" />
+                    <div class="column column-10">
+                      <div class="column column-5">
+                        <a-cascader :options="options" placeholder="Запуск проверки" />
+                      </div>
+                      <div class="column column-5">
+                        <a-form-model-item label="Activity time">
+                          <a-date-picker v-model="date1" show-time type="date" placeholder="Выбор даты" />
+                        </a-form-model-item>
+                      </div>
+                      <div class="column column-5">
+                        <nuxt-link to="/scanReport">Отчетов о сканировании: {{ site.scanReports }}</nuxt-link>
+                      </div>
                     </div>
-                    <div class="column column-4">
-                      <a-form-model-item label="Activity time">
-                        <a-date-picker v-model="date1" show-time type="date" placeholder="Выбор даты" />
-                      </a-form-model-item>
-                    </div>
-                    <div class="column column-3">
+                    <div class="column column-2">
                       <a-button type="primary"> Запустить проверку </a-button>
-                    </div>
-                    <div class="column column-4">
-                      <nuxt-link to="/scanReport">Отчетов о сканировании: {{ site.scanReports }}</nuxt-link>
                     </div>
                   </div>
                 </div>
 
                 <div v-else>
                   <div class="row">
-                    <div class="column column-4">
-                      <a-steps :current="1" size="small" @click.prevent="openSiteVerify(index + 1)">
-                        <a-step title="Подтверждение прав">
-                          <a-icon slot="icon" type="check-circle" />
-                        </a-step>
-                      </a-steps>
+                    <div class="column column-10">
+                      <p>
+                        Прежде, чем получить возможность сканирования сайта на уязвимости, Вам необходимо подтвердить,
+                        что вы владеете данным сайтом.
+                      </p>
+                    </div>
+                    <div class="column column-2">
+                      <a-button type="primary" @click.prevent="openSiteVerify(site.id)"> Подтверждение прав </a-button>
                     </div>
                   </div>
                 </div>
@@ -61,7 +67,6 @@
           </div>
         </a-layout-content>
       </a-layout>
-      <p @click="getSites">Test</p>
     </div>
   </div>
 </template>
@@ -70,24 +75,32 @@
   export default {
     data() {
       return {
-        sites: [
-          {
-            scanReports: 10,
-            status: true,
-            websiteTitle: 'ServisePipe',
-            websiteUrl: 'https://servicepipe.ru/',
-            websiteHost: 'servicepipe.ru',
-            _id: 'asaswcecacaw',
-          },
-          {
-            scanReports: 5,
-            status: false,
-            websiteTitle: 'TOP-penoplast',
-            websiteUrl: 'https://www.toppenoplast.ru/',
-            websiteHost: 'toppenoplast.ru',
-            _id: 'asaswcedsdcacaw',
-          },
-        ],
+        // sites: {},
+
+        //     // {
+        //     //   scanReports: 10,
+        //     //   status: true,
+        //     //   websiteTitle: 'ServisePipe',
+        //     //   websiteUrl: 'https://servicepipe.ru/',
+        //     //   websiteHost: 'servicepipe.ru',
+        //     //   _id: 'asaswcecacaw',
+        //     // },
+        //     // {
+        //     //   scanReports: 5,
+        //     //   status: false,
+        //     //   websiteTitle: 'TOP-penoplast',
+        //     //   websiteUrl: 'https://www.toppenoplast.ru/',
+        //     //   websiteHost: 'toppenoplast.ru',
+        //     //   _id: 'asaswcedsdcacaw',
+        //     // },
+        //     // {
+        //     //   scanReports: 0,
+        //     //   status: false,
+        //     //   websiteTitle: 'test',
+        //     //   websiteUrl: 'http://www.u91212.test-handyhost.ru/',
+        //     //   websiteHost: 'u91212.test-handyhost.ru',
+        //     //   _id: '"b4fde4dd05ea65f40ea620507c5b4e33add75a171d1f59d03fde68e5641a4827',
+        //     // },
 
         options: [
           {
@@ -111,35 +124,39 @@
       };
     },
     methods: {
-      async getSites() {
-        try {
-          const url = 'http://185.79.117.244:4004/api/modules/scanner/info';
-          const payload = {
-            target: '5f46a2d7db855f065ccd8dc6', // по юзеру
-          };
-
-          const answer = await this.$axios({
-            url,
-            method: 'POST',
-            data: payload,
-            validateStatus: false,
-          });
-          console.log('answer', answer);
-          const { data } = answer;
-          if (data.statusCode !== 200 && data.statusCode !== 201) throw new Error(data.serverAnswer);
-
-          const result = data.serverAnswer;
-          this.sites = result;
-          console.log('result', result);
-
-          return result;
-        } catch (err) {
-          console.error(`❌ [ERROR] ${err}`);
-          return err;
-        }
-      },
+      // async getSites() {
+      //   try {
+      //     const url = 'http://185.79.117.244:4004/api/modules/scanner/info';
+      //     const payload = {
+      //       target: '5f46a2d7db855f065ccd8dc6', // по юзеру
+      //     };
+      //     const answer = await this.$axios({
+      //       url,
+      //       method: 'POST',
+      //       data: payload,
+      //       validateStatus: false,
+      //     });
+      //     console.log('answer', answer);
+      //     const { data } = answer;
+      //     if (data.statusCode !== 200 && data.statusCode !== 201) throw new Error(data.serverAnswer);
+      //     const result = data.serverAnswer;
+      //     this.sites = result;
+      //     console.log('result', result);
+      //     return result;
+      //   } catch (err) {
+      //     console.error(`❌ [ERROR] ${err}`);
+      //     return err;
+      //   }
+      // },
       openSiteVerify(index) {
+        //переименовать
         this.$router.push(`/verify/${index}`);
+      },
+    },
+    computed: {
+      sites() {
+        console.log(this.$store.getters.getSitesLoaded);
+        return this.$store.getters.getSitesLoaded;
       },
     },
   };
@@ -201,7 +218,7 @@
     width: 32.2666666667%;
   }
   .column-5 {
-    width: 40.7333333333%;
+    width: 40%;
   }
   .column-6 {
     width: 49.2%;
@@ -216,7 +233,7 @@
     width: 74.6%;
   }
   .column-10 {
-    width: 83.0666666667%;
+    width: 80%;
   }
   .column-11 {
     width: 91.5333333333%;

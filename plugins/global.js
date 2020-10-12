@@ -1,3 +1,5 @@
+// const db = require('./db');
+
 const setup = {
   serverAPI: String('http://185.79.117.244:4004'),
 };
@@ -5,4 +7,5 @@ const setup = {
 // enable plugins
 export default function globalfunction({ app, redirect, $axios }, inject) {
   inject('serverAPI', setup.serverAPI);
+  // inject('db', db);
 }

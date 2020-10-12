@@ -1,2 +1,11 @@
+dist/
 node_modules
-dist
+node_modules/
+node_modules/**/*
+*.snippet
+jsconfig.json
+docs
+.nuxt
+__test__
+static
+.vscode

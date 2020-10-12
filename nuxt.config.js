@@ -25,7 +25,11 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['normalize.css', { src: 'ant-design-vue/dist/antd.less', lang: 'less' }],
+  css: [
+    'normalize.css',
+    { src: 'ant-design-vue/dist/antd.less', lang: 'less' },
+    { src: '@/assets/scss/main.scss', lang: 'scss' },
+  ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
