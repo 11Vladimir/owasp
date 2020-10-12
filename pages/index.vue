@@ -23,7 +23,7 @@
                     </div>
                   </div>
                   <div class="column column-2">
-                    <a-button type="link"> Удалить сайт </a-button>
+                    <a-button type="link" @click.prevent="openDeleteSite(site.id)"> Удалить сайт </a-button>
                   </div>
                 </div>
                 <hr />
@@ -72,6 +72,8 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
     data() {
       return {
@@ -148,8 +150,10 @@
       //     return err;
       //   }
       // },
+      openDeleteSite(index) {
+        this.$router.push(`/deleteSite/${index}`);
+      },
       openSiteVerify(index) {
-        //переименовать
         this.$router.push(`/verify/${index}`);
       },
     },
