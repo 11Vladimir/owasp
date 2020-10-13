@@ -1,53 +1,47 @@
 <template>
-  <div class="container">
+  <section class="reports">
     <div>
-      <Logo />
-      <a-layout id="components-layout-demo-side" style="min-height: 75vh" class="radius">
-        <a-layout-content style="margin: 0 16px">
-          <a-breadcrumb style="margin: 16px 0">
-            <h1>ОТЧЕТ О СКАНИРОВАНИИ</h1>
-          </a-breadcrumb>
-          <a-card class="radius">
-            <p>Название сайта</p>
-            <p>Дата запуска</p>
-            <p>Время запуска</p>
-            <p>Статус</p>
-            <h3>Обнаружено уязвимостей</h3>
+      <h1>ОТЧЕТ О СКАНИРОВАНИИ</h1>
 
-            <a-table :columns="columns" :data-source="data" bordered>
-              <template v-for="col in ['name', 'age', 'address']" :slot="col" slot-scope="text, record, index">
-                <div :key="col">
-                  <a-input
-                    v-if="record.editable"
-                    style="margin: -5px 0"
-                    :value="text"
-                    @change="e => handleChange(e.target.value, record.key, col)"
-                  />
-                  <template v-else>
-                    {{ text }}
-                  </template>
-                </div>
+      <a-card class="radius">
+        <p>Название сайта</p>
+        <p>Дата запуска</p>
+        <p>Время запуска</p>
+        <p>Статус</p>
+        <h3>Обнаружено уязвимостей</h3>
+
+        <a-table :columns="columns" :data-source="data" bordered>
+          <template v-for="col in ['name', 'age', 'address']" :slot="col" slot-scope="text, record, index">
+            <div :key="col">
+              <a-input
+                v-if="record.editable"
+                style="margin: -5px 0"
+                :value="text"
+                @change="e => handleChange(e.target.value, record.key, col)"
+              />
+              <template v-else>
+                {{ text }}
               </template>
-              <template slot="operation" slot-scope="text, record, index">
-                <div class="editable-row-operations">
-                  <span v-if="record.editable">
-                    <a @click="() => save(record.key)">Save</a>
-                    <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key)">
-                      <a>Cancel</a>
-                    </a-popconfirm>
-                  </span>
-                  <span v-else>
-                    <a :disabled="editingKey !== ''" @click="() => edit(record.key)">Edit</a>
-                  </span>
-                </div>
-              </template>
-            </a-table>
-          </a-card>
-          <nuxt-link to="/">Вернуться назад</nuxt-link>
-        </a-layout-content>
-      </a-layout>
+            </div>
+          </template>
+          <template slot="operation" slot-scope="text, record, index">
+            <div class="editable-row-operations">
+              <span v-if="record.editable">
+                <a @click="() => save(record.key)">Save</a>
+                <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key)">
+                  <a>Cancel</a>
+                </a-popconfirm>
+              </span>
+              <span v-else>
+                <a :disabled="editingKey !== ''" @click="() => edit(record.key)">Edit</a>
+              </span>
+            </div>
+          </template>
+        </a-table>
+      </a-card>
+      <nuxt-link to="/">Вернуться назад</nuxt-link>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -139,17 +133,3 @@
     },
   };
 </script>
-
-<style scoped>
-  .container {
-    margin: 0 auto;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-  }
-
-  .radius {
-    border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
-    margin: 15px 0px;
-  }
-</style>

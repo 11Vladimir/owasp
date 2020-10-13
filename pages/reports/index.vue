@@ -1,9 +1,9 @@
 <template>
   <div>
-    <section class="verify">
+    <section class="reports">
       <div class="father__background">
         <div class="container">
-          <Verify />
+          <Reports />
         </div>
       </div>
     </section>
@@ -11,8 +11,8 @@
 </template>
 
 <script>
-  import Verify from '~/components/UI/Verify.vue';
+  import Reports from '~/components/UI/Reports.vue';
   export default {
-    components: { Verify },
+    components: { Reports },
   };
 </script>

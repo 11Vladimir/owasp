@@ -1,0 +1,246 @@
+@import './commons.scss';
+
+.father__background {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-color: #f1f1f1;
+}
+
+.container {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+// html {
+//   line-height: $mainLineHeight;
+//   font-size: $mainFontSize;
+//   color: $mainFontColor;
+//   height: 100%;
+//   @media screen and (max-width: $desktopWidth) {
+//     font-size: 16px;
+//   }
+//   @media screen and (max-width: $tableWidth) {
+//     font-size: 15px;
+//   }
+//   @media screen and (max-width: $phoneWidth) {
+//     font-size: 14px;
+//   }
+// }
+
+// body {
+//   font-family: $mainFont;
+//   font-size: $mainFontSize;
+//   font-weight: $mainFontWeight;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+//   margin: 0;
+//   padding: 0;
+//   background-color: #f7f7f7;
+// }
+
+// *,
+// *:before,
+// *:after {
+//   box-sizing: border-box;
+// }
+
+// h1,
+// h2,
+// h3,
+// h4,
+// h5,
+// h6 {
+//   margin: 0;
+// }
+
+// input,
+// textarea,
+// select,
+// button {
+//   border: 1px solid $border-base;
+// }
+
+// a {
+//   text-decoration: none;
+// }
+
+// ul,
+// li {
+//   list-style-type: none;
+//   margin: 0;
+//   padding: 0;
+// }
+
+// section,
+// .section {
+//   position: relative;
+//   padding: 40px 0;
+//   @media screen and (max-width: $desktopWidth) {
+//     padding: 36px 0;
+//   }
+//   @media screen and (max-width: $desktopWidth) {
+//     padding: 28px 0;
+//   }
+//   @media screen and (max-width: $desktopWidth) {
+//     padding: 20px 0;
+//   }
+// }
+
+// .wrapper {
+//   display: flex;
+//   flex-direction: column;
+//   min-height: 100vh;
+//   margin: 0 auto;
+// }
+
+// .wrapper-content {
+//   display: flex;
+//   flex-direction: column;
+//   min-height: 100vh;
+//   &.wrapper-content--fixed {
+//     margin-top: 80px;
+//   }
+// }
+
+// .container {
+//   width: 100%;
+//   flex: 0 0 auto;
+//   position: relative;
+//   max-width: $desktopWidth;
+//   margin: 0 auto;
+//   @media screen and (max-width: $smDesktopWidth) {
+//     max-width: $tableWidth;
+//   }
+//   @media screen and (max-width: $tableWidth) {
+//     max-width: $phoneWidth;
+//   }
+//   @media screen and (max-width: $phoneWidth) {
+//     max-width: $smPhoneWidth;
+//   }
+// }
+
+.radius {
+  border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+  margin: 15px 0px;
+}
+.ant-form-item {
+  margin-bottom: 0px;
+}
+
+button {
+  width: 200px;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+@media (max-width: 570.98px) {
+  button {
+    width: 100%;
+  }
+}
+
+p {
+  font-family: 'Quicksand', 'Source Sans Pro', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto',
+    'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 0.88rem;
+  color: #2f2f2f;
+  margin: 0;
+  word-break: break-word;
+}
+
+.row:before,
+.row:after {
+  content: ' ';
+  display: table;
+}
+.row:after {
+  clear: both;
+}
+
+.column {
+  position: relative;
+  float: left;
+  margin: 0 auto;
+  padding: 10px 10px;
+  /* margin: 10px 10px; */
+}
+
+.column-1 {
+  width: 6.86666666667%;
+}
+.column-2 {
+  width: 15.3333333333%;
+}
+.column-3 {
+  width: 25%;
+}
+.column-4 {
+  width: 32.2666666667%;
+}
+.column-5 {
+  width: 40%;
+}
+.column-6 {
+  width: 49.2%;
+}
+.column-7 {
+  width: 57.6666666667%;
+}
+.column-8 {
+  width: 66.1333333333%;
+}
+.column-9 {
+  width: 74.6%;
+}
+.column-10 {
+  width: 80%;
+}
+.column-11 {
+  width: 91.5333333333%;
+}
+.column-12 {
+  width: 100%;
+}
+
+@media only screen and (max-width: 550px) {
+  .column-1,
+  .column-2,
+  .column-3,
+  .column-4,
+  .column-5,
+  .column-6,
+  .column-7,
+  .column-8,
+  .column-9,
+  .column-10,
+  .column-11,
+  .column-12 {
+    width: auto;
+    float: none;
+  }
+}
+
+.icon {
+  margin: 20px;
+  font-size: 30px;
+}
+
+.onVerifity {
+  color: #1890ff;
+}
+
+.container2 {
+  /* margin: 0 auto; */
+  /* min-height: 100vh; */
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.icon {
+  margin: 20px;
+  font-size: 30px;
+}
