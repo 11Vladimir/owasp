@@ -2,26 +2,26 @@
   <section class="delete">
     <div>
       <h1>Удаление сайта {{ site.title }}</h1>
-      <a-card class="radius">
-        <div v-if="statusDelete">
+      <a-card class="radius content_center">
+        <div v-if="statusDelete" class="column">
           <p>Сайт успешно удален!</p>
-          <a href="/">OK</a>
+          <a-button type="primary"> <a href="/">OK</a> </a-button>
         </div>
 
-        <div v-else>
-          <p>Вы действительно хотите удалить сайт {{ site.host }} из вашего списка сайтов?</p>
-          <p>Все данные о сканировании атак будут утеряны!</p>
+        <div v-else class="column">
+          <p>
+            Вы действительно хотите удалить сайт <b>{{ site.host }}</b> из вашего списка сайтов?<br />
+            Все данные о сканировании атак будут утеряны!
+          </p>
           <a-button type="primary" @click.prevent="deleteSite(site.id)"> Удалить </a-button>
         </div>
       </a-card>
-
       <nuxt-link to="/">Вернуться назад</nuxt-link>
     </div>
   </section>
 </template>
 
 <script>
-  import axios from 'axios';
   export default {
     data() {
       return {
@@ -54,15 +54,13 @@
     //     //   websiteHost: 'u91212.test-handyhost.ru',
 
     methods: {
-      getSite() {
-        return axios
+      async getSite() {
+        return this.$axios
           .get(`https://owqsp-nuxt.firebaseio.com/sites/${this.$router.history.current.params.idDelete}.json`)
           .then(res => {
             console.log('res', res);
 
-            this.site = { ...res.data, id: res.data.id };
-
-            return;
+            return (this.site = { ...res.data, id: res.data.id });
           })
           .catch(e => console.log(e));
       },
@@ -90,8 +88,8 @@
       //     return err;
       //   }
       // },
-      deleteSite() {
-        axios
+      async deleteSite() {
+        return this.$axios
           .delete(`https://owqsp-nuxt.firebaseio.com/sites/${this.$router.history.current.params.idDelete}.json`)
           .then(res => {
             console.log(res);

@@ -1,5 +1,5 @@
 <template>
-  <section class="add">
+  <section class="add-site">
     <div>
       <h1>ДОБАВИТЬ САЙТ</h1>
       <div :style="{ padding: '24px', background: '#fff' }" class="radius">
@@ -64,7 +64,7 @@
         this.site.url = `${this.protocol}www.${this.site.host}${this.domainZone}`;
 
         this.$store.dispatch('addSite', this.site).then(() => {
-          this.$router.push('/add');
+          this.$router.push('/add-site');
         });
       },
       // async siteAdded() {

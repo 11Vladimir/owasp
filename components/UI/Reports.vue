@@ -11,7 +11,8 @@
         <h3>Обнаружено уязвимостей</h3>
 
         <a-table :columns="columns" :data-source="data" bordered>
-          <template v-for="col in ['name', 'age', 'address']" :slot="col" slot-scope="text, record, index">
+          <template v-for="col in ['name', 'age', 'address']" :slot="col">
+            // slot-scope="text, record, index"
             <div :key="col">
               <a-input
                 v-if="record.editable"
@@ -24,7 +25,8 @@
               </template>
             </div>
           </template>
-          <template slot="operation" slot-scope="text, record, index">
+          <template slot="operation">
+            // slot-scope="text, record, index"
             <div class="editable-row-operations">
               <span v-if="record.editable">
                 <a @click="() => save(record.key)">Save</a>

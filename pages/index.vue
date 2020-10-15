@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="sites">
+    <section>
       <div class="father__background">
         <div class="container">
           <Sites />

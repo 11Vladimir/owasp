@@ -7,46 +7,40 @@
         данным сайтом. Мы можем предложить два способа подтверждения.
       </p>
 
-      <div class="row">
-        <div class="column column-6">
+      <div class="column column-1">
+        <div class="column">
           <a-card class="radius">
-            <div class="container2">
-              <div>
-                <a-icon type="check-circle" slot="icon" class="icon" :theme="iconsColor1" />
-              </div>
-              <p>Первый способ</p>
-              <br />
+            <div class="content_center">
+              <a-icon type="check-circle" slot="icon" class="icon" :theme="iconsColor1" />
+
               <p>
                 Добавьте TXT запись в DNS <br />
-                IN TXT "{{ site.key }}"
+                <b>TXT "{{ site.key }}"</b>
               </p>
-              <br />
-              <div v-if="verefity1">
+
+              <div v-if="verefity1" class="column">
                 <p class="onVerifity">Права владения сайтом подтверждены!</p>
               </div>
-              <div v-else>
-                <a-button type="primary" v-on:click="verifyDns()">Подтвердить</a-button>
+              <div v-else class="column">
+                <a-button type="primary" v-on:click="verifyDNS()">Подтвердить</a-button>
               </div>
             </div>
           </a-card>
         </div>
-        <div class="column column-6">
+        <div class="column">
           <a-card class="radius">
-            <div class="container2">
-              <div>
-                <a-icon type="check-circle" slot="icon" class="icon" :theme="iconsColor2" />
-              </div>
-              <p>Второй способ</p>
-              <br />
+            <div class="content_center">
+              <a-icon type="check-circle" slot="icon" class="icon" :theme="iconsColor2" />
+
               <p>
                 Создайте файл в каталоге веб-сервера <br />
-                /verify/{{ site.key }}.html
+                <b>/verify/{{ site.key }}.html</b>
               </p>
-              <br />
-              <div v-if="verefity2">
+
+              <div v-if="verefity2" class="column">
                 <p class="onVerifity">Права владения сайтом подтверждены!</p>
               </div>
-              <div v-else>
+              <div v-else class="column">
                 <a-button type="primary" v-on:click="verifyWeb()">Подтвердить</a-button>
               </div>
             </div>
@@ -60,8 +54,6 @@
 </template>
 
 <script>
-  import axios from 'axios';
-
   export default {
     data() {
       return {
@@ -75,17 +67,16 @@
 
     methods: {
       getSite() {
-        return axios
+        return this.$axios
           .get(`https://owqsp-nuxt.firebaseio.com/sites/${this.$router.history.current.params.id}.json`)
           .then(res => {
-            this.site = { ...res.data, id: res.data.id };
-            return;
+            return (this.site = { ...res.data, id: res.data.id });
           })
           .catch(e => console.log(e));
       },
 
       putSite() {
-        axios
+        return this.$axios
           .put(`https://owqsp-nuxt.firebaseio.com/sites/${this.$router.history.current.params.id}/status.json`, {
             status: true,
           })
@@ -161,6 +152,10 @@
           return err;
         }
       },
+
+      // Проверка по DNS
+      verifyDNS() {},
+
       //   // Изменение данных сайта с подтвержденными правами
       //   async verifyData() {
       //     if (this.verefity1 == false || this.verefity2 == false) {
@@ -203,11 +198,8 @@
         this.putSite();
       },
     },
-
-    beforeMount() {
-      this.getSite();
-
-      // this.verifyData();
+    created() {
+      this.getSite(); // this.verifyData();
     },
   };
 </script>

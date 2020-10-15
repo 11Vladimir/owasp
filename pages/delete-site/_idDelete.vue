@@ -1,9 +1,9 @@
 <template>
   <div>
-    <section class="add">
+    <section class="delete-site">
       <div class="father__background">
         <div class="container">
-          <Add />
+          <DeleteSite />
         </div>
       </div>
     </section>
@@ -11,8 +11,8 @@
 </template>
 
 <script>
-  import Add from '~/components/UI/Add.vue';
+  import DeleteSite from '~/components/UI/DeleteSite.vue';
   export default {
-    components: { Add },
+    components: { DeleteSite },
   };
 </script>
