@@ -29,17 +29,17 @@
                   <a-input :placeholder="site.url" disabled />
                 </div>
                 <div>
-                  <a-cascader :options="options" placeholder="Запуск проверки" />
+                  <a-cascader v-model="option" :options="options" placeholder="Запуск проверки" />
                 </div>
                 <div>
                   <a-date-picker v-model="date1" type="date" placeholder="Выбор даты" style="width: 100%" />
                 </div>
                 <div>
-                  <a-time-picker v-model="time" type="time" placeholder="Выбор времени" style="width: 100%" />
+                  <a-time-picker v-model="time1" type="time" placeholder="Выбор времени" style="width: 100%" />
                 </div>
 
                 <div>
-                  <a-button type="primary" @click="postScan()"> Запустить проверку </a-button>
+                  <a-button type="primary" @click="postScan(site.id)"> Запустить проверку </a-button>
                 </div>
               </div>
             </a-form>
@@ -70,9 +70,10 @@
     data() {
       return {
         scan: {
-          date: undefined,
-          scanStatus: 'Проверка запущена',
-          options: 0,
+          date: '',
+          scanStatus: 'Сканируется',
+          option: '',
+          time: '',
         },
         options: [
           {
@@ -92,17 +93,39 @@
             label: 'Раз в месяц',
           },
         ],
+        option: [],
         date1: undefined,
+        time1: undefined,
       };
     },
     methods: {
-      async postScan() {
-        this.scan.options = this.options.value;
-        console.log(this.scan.options);
+      postScan(siteID) {
+        this.scan.option = this.option.toString();
+
+        // Обработка даты
+        const date = this.date1._d;
+        const year = date.getFullYear();
+        const m = date.getMonth() + 1;
+        const month = m < 10 ? '0' + m : m;
+        const d = date.getDate();
+        const day = d < 10 ? '0' + d : d;
+        this.scan.date = `${year}.${month}.${day}`;
+
+        // Обработка времени
+        const time = this.time1._d;
+        const hh = time.getHours();
+        const hours = hh < 10 ? '0' + hh : hh;
+        const mm = time.getMinutes();
+        const minutes = mm < 10 ? '0' + mm : mm;
+        const ss = time.getSeconds();
+        const seconds = ss < 10 ? '0' + ss : ss;
+        this.scan.time = `${hours}:${minutes}:${seconds}`;
+
+        console.log('scan', this.scan);
         return this.$axios
-          .post(`https://owqsp-nuxt.firebaseio.com/sites/scanData.json`, this.scan)
+          .post(`https://owqsp-nuxt.firebaseio.com/sites/${siteID}/scanData.json`, this.scan)
           .then(res => {
-            console.log(res);
+            console.log('res', res);
           })
           .catch(e => console.log(e));
       },
@@ -132,11 +155,11 @@
       //   }
       // },
 
-      openDeleteSite(index) {
-        return this.$router.push(`/delete-site/${index}`);
+      openDeleteSite(siteID) {
+        return this.$router.push(`/delete-site/${siteID}`);
       },
-      openSiteVerify(index) {
-        return this.$router.push(`/verify/${index}`);
+      openSiteVerify(siteID) {
+        return this.$router.push(`/verify/${siteID}`);
       },
     },
     computed: {
