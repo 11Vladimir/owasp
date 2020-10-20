@@ -88,16 +88,6 @@
       //     return err;
       //   }
       // },
-      async deleteSite() {
-        return this.$axios
-          .delete(`https://owqsp-nuxt.firebaseio.com/sites/${this.$router.history.current.params.idDelete}.json`)
-          .then(res => {
-            console.log(res);
-
-            this.statusDelete = true;
-          })
-          .catch(e => console.log(e));
-      },
     },
     beforeMount() {
       this.getSite();

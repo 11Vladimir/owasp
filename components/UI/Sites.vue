@@ -17,7 +17,19 @@
               </p>
             </div>
             <div>
-              <a-button type="link" @click.prevent="openDeleteSite(site.id)"> Удалить сайт </a-button>
+              <a-button type="link" @click="showModal(site.id, site.title)"> Удалить сайт </a-button>
+              <a-modal
+                title="Удаление сайта"
+                :visible="modal.visible"
+                :confirm-loading="modal.confirmLoading"
+                @ok="handleOk"
+                @cancel="handleCancel"
+              >
+                <p>
+                  Вы действительно хотите удалить сайт <b>{{ modal.siteTitle }}</b> из вашего списка сайтов? Все данные
+                  о сканировании атак будут утеряны!
+                </p>
+              </a-modal>
             </div>
           </div>
           <hr />
@@ -96,9 +108,43 @@
         option: [],
         date1: undefined,
         time1: undefined,
+        modal: {
+          ModalText: '',
+          visible: false,
+          confirmLoading: false,
+          siteTitle: '',
+          siteId: '',
+        },
       };
     },
     methods: {
+      // Кнопка удаления
+      showModal(siteID, siteTitle) {
+        this.modal.visible = true;
+        this.modal.siteTitle = siteTitle;
+        this.modal.siteId = siteID;
+      },
+      async handleOk() {
+        this.modal.confirmLoading = true;
+
+        return this.$axios
+          .delete(`https://owqsp-nuxt.firebaseio.com/sites/${this.modal.siteId}.json`)
+          .then(res => {
+            console.log(res);
+            this.modal.visible = false;
+            this.modal.confirmLoading = false;
+            this.$message.success('Сайт удален');
+          })
+          .catch(e => {
+            console.log(e);
+            this.$message.error('Произошла ошибка при удалении сайта');
+          });
+      },
+      handleCancel(e) {
+        console.log('Нажата кнопка отмены');
+        this.modal.visible = false;
+      },
+
       postScan(siteID) {
         this.scan.option = this.option.toString();
 
@@ -130,6 +176,8 @@
           .catch(e => console.log(e));
       },
 
+      // удаление сайта
+
       // async getSites() {
       //   try {
       //     const url = 'http://185.79.117.244:4004/api/modules/scanner/info';
@@ -155,9 +203,9 @@
       //   }
       // },
 
-      openDeleteSite(siteID) {
-        return this.$router.push(`/delete-site/${siteID}`);
-      },
+      // openDeleteSite(siteID) {
+      //   return this.$router.push(`/delete-site/${siteID}`);
+      // },
       openSiteVerify(siteID) {
         return this.$router.push(`/verify/${siteID}`);
       },
