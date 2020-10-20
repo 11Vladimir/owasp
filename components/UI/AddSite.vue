@@ -26,7 +26,7 @@
                 </a-input>
               </div>
             </a-form-item>
-            <a-button type="primary" html-type="submit"> Добавить сайт </a-button>
+            <a-button type="primary" html-type="submit" :disabled="disabled"> Добавить сайт </a-button>
           </a-form>
         </div>
       </div>
@@ -52,6 +52,7 @@
         },
         protocol: 'http://',
         domainZone: '.ru',
+        disabled: false,
 
         formLayout: 'horizontal',
         form: this.$form.createForm(this, { name: 'coordinated' }),
@@ -65,7 +66,12 @@
 
         this.$store.dispatch('addSite', this.site).then(() => {
           this.$router.push('/add-site');
+          this.$message.success('Сайт добавлен!');
+          setTimeout(() => {
+            return (this.disabled = false);
+          }, 1500);
         });
+        return (this.disabled = true);
       },
       // async siteAdded() {
       //   try {

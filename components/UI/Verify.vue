@@ -22,7 +22,7 @@
                 <p class="onVerifity">Права владения сайтом подтверждены!</p>
               </div>
               <div v-else class="column">
-                <a-button type="primary" v-on:click="verifyDNS()">Подтвердить</a-button>
+                <a-button type="primary" v-on:click="verifyDNS()" :disabled="disabled">Подтвердить</a-button>
               </div>
             </div>
           </a-card>
@@ -41,7 +41,7 @@
                 <p class="onVerifity">Права владения сайтом подтверждены!</p>
               </div>
               <div v-else class="column">
-                <a-button type="primary" v-on:click="verifyWeb()">Подтвердить</a-button>
+                <a-button type="primary" v-on:click="verifyWeb()" :disabled="disabled">Подтвердить</a-button>
               </div>
             </div>
           </a-card>
@@ -62,6 +62,7 @@
         verefity2: false,
         iconsColor1: 'outlined',
         iconsColor2: 'outlined',
+        disabled: false,
       };
     },
 
@@ -70,7 +71,7 @@
         return this.$axios
           .get(`https://owqsp-nuxt.firebaseio.com/sites/${this.$router.history.current.params.id}.json`)
           .then(res => {
-            return (this.site = { ...res.data, id: res.data.id });
+            return (this.site = { ...res.data, id: res.data.name });
           })
           .catch(e => console.log(e));
       },
@@ -130,24 +131,34 @@
           const payload = {
             www: `${this.site.url}/verify/${this.site.key}.html`, //http://u91212.test-handyhost.ru/verify/cc0c1b00-7927-4bfe-894d-faa708b6f588.html
           };
+          this.disabled = true;
           const answer = await this.$axios({
             url: `${this.$serverAPI}${url}`,
             method: 'POST',
             data: payload,
             validateStatus: false,
           });
+
           console.log('verifyWeb answer', answer);
           const { data } = answer;
           if (data.statusCode == 200) {
-            this.verefity2 = true;
-            this.iconsColor2 = 'twoTone';
-            return this.iconsColor2;
+            this.$message.success('Права подтверждены!');
+            setTimeout(() => {
+              this.disabled = false;
+              this.verefity2 = true;
+              this.iconsColor2 = 'twoTone';
+              return;
+            }, 1500);
           }
           if (data.statusCode !== 200 && data.statusCode !== 201) throw new Error(data.serverAnswer);
           const result = data.serverAnswer;
           console.log('verifyWeb result', result);
           return result;
         } catch (err) {
+          this.$message.error('Права не подтверждены!');
+          setTimeout(() => {
+            return (this.disabled = false);
+          }, 1500);
           console.error(`❌ [ERROR] ${err}`);
           return err;
         }

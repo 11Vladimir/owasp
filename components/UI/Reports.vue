@@ -3,17 +3,31 @@
     <div>
       <h1>Отчет о сканировании сайта {{ site.title }}</h1>
 
-      <div v-for="(report, index) of site.scanDatas.reports" :key="index">
+      <div v-for="(report, index) of site.scanDatas" :key="index">
         <a-card class="radius">
           <div class="column-2">
             <div>
-              <p><b>Дата запуска:</b> {{ report.date }}</p>
-              <p><b>Время запуска:</b> {{ report.time }}</p>
-              <p><b>Статус:</b> {{ report.scanStatus }}</p>
+              <p>
+                Статус: <b>{{ report.scanStatus }}</b>
+              </p>
+              <p>
+                Дата запуска: <b>{{ report.date }}</b>
+              </p>
+              <p>
+                Время запуска: <b>{{ report.time }}</b>
+              </p>
             </div>
 
             <div>
-              <a-button type="primary" @click.prevent=""> Удалить отчет </a-button>
+              <a-popconfirm
+                title="Вы действительно хотите удалить этот отчет?"
+                ok-text="Да"
+                cancel-text="Нет"
+                @confirm="confirm(index)"
+                @cancel="cancel"
+              >
+                <a href="#">Удалить отчет</a>
+              </a-popconfirm>
             </div>
           </div>
 
@@ -65,20 +79,20 @@
       address: 'New York No. 1 Lake Park, New York No. 1 Lake Park',
       tags: ['nice', 'developer'],
     },
-    // {
-    //   key: '2',
-    //   name: 'Jim Green',
-    //   age: 42,
-    //   address: 'London No. 2 Lake Park, London No. 2 Lake Park',
-    //   tags: ['loser'],
-    // },
-    // {
-    //   key: '3',
-    //   name: 'Joe Black',
-    //   age: 32,
-    //   address: 'Sidney No. 1 Lake Park, Sidney No. 1 Lake Park',
-    //   tags: ['cool', 'teacher'],
-    // },
+    {
+      key: '2',
+      name: 'Jim Green',
+      age: 42,
+      address: 'London No. 2 Lake Park, London No. 2 Lake Park',
+      tags: ['loser'],
+    },
+    {
+      key: '3',
+      name: 'Joe Black',
+      age: 32,
+      address: 'Sidney No. 1 Lake Park, Sidney No. 1 Lake Park',
+      tags: ['cool', 'teacher'],
+    },
   ];
 
   export default {
@@ -86,35 +100,41 @@
       return {
         data,
         columns,
-        // статика
-        site: {
-          host: 'u91212.test-handyhost',
-          scanDatas: {
-            reports: [
-              {
-                date: '2020.10.31',
-                option: 'Раз в месяц',
-                scanStatus: 'Сканируется',
-                time: '18:5:49',
-              },
-              {
-                date: '2020.10.31',
-                option: 'Раз в месяц',
-                scanStatus: 'Сканируется',
-                time: '18:5:49',
-              },
-            ],
-          },
-          scanReports: 0,
-          verify: {
-            status: true,
-            key: 'c56a549c-aecf-405e-9780-071455defcb9',
-          },
-
-          title: 'dddddddddddddddd',
-          url: 'http://www.u91212.test-handyhost.ru',
-        },
+        site: {},
       };
+    },
+    methods: {
+      getSite() {
+        return this.$axios
+          .get(`https://owqsp-nuxt.firebaseio.com/sites/${this.$router.history.current.params.idReports}.json`)
+          .then(res => {
+            console.log('getSite', res);
+            return (this.site = { ...res.data, id: res.data.id });
+          })
+          .catch(e => console.log(e));
+      },
+      confirm(scanID) {
+        return this.$axios
+          .delete(
+            `https://owqsp-nuxt.firebaseio.com/sites/${this.$router.history.current.params.idReports}/scanDatas/${scanID}.json`
+          )
+          .then(res => {
+            console.log('confirm', res);
+            this.$message.success('Отчет удален!');
+            this.getSite();
+          })
+          .catch(e => {
+            console.log('error', e);
+            this.$message.error('Произошла ошибка при удалении отчета!');
+          });
+      },
+      cancel(e) {
+        console.log(e);
+        this.$message.error('Отчет не удален!');
+      },
+    },
+    created() {
+      this.getSite();
     },
   };
 </script>

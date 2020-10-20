@@ -56,7 +56,10 @@
               </div>
             </a-form>
             <div class="column">
-              <nuxt-link to="/reports">Отчетов о сканировании: {{ site.scanReports }}</nuxt-link>
+              <a-button type="link" @click.prevent="openReports(site.id)"
+                >Отчетов о сканировании: {{ site.scanReports }}
+              </a-button>
+              <!-- <nuxt-link to="/reports">Отчетов о сканировании: {{ site.scanReports }}</nuxt-link> -->
             </div>
           </div>
 
@@ -79,6 +82,9 @@
 
 <script>
   export default {
+    asyncData() {
+      return {};
+    },
     data() {
       return {
         scan: {
@@ -124,7 +130,7 @@
         this.modal.siteTitle = siteTitle;
         this.modal.siteId = siteID;
       },
-      async handleOk() {
+      handleOk() {
         this.modal.confirmLoading = true;
 
         return this.$axios
@@ -134,6 +140,7 @@
             this.modal.visible = false;
             this.modal.confirmLoading = false;
             this.$message.success('Сайт удален');
+            sites();
           })
           .catch(e => {
             console.log(e);
@@ -145,6 +152,7 @@
         this.modal.visible = false;
       },
 
+      // Отправка данные о сканировании
       postScan(siteID) {
         this.scan.option = this.option.toString();
 
@@ -155,7 +163,7 @@
         const month = m < 10 ? '0' + m : m;
         const d = date.getDate();
         const day = d < 10 ? '0' + d : d;
-        this.scan.date = `${year}.${month}.${day}`;
+        this.scan.date = `${day}.${month}.${year}`;
 
         // Обработка времени
         const time = this.time1._d;
@@ -167,16 +175,18 @@
         const seconds = ss < 10 ? '0' + ss : ss;
         this.scan.time = `${hours}:${minutes}:${seconds}`;
 
-        console.log('scan', this.scan);
         return this.$axios
-          .post(`https://owqsp-nuxt.firebaseio.com/sites/${siteID}/scanData.json`, this.scan)
+          .post(`https://owqsp-nuxt.firebaseio.com/sites/${siteID}/scanDatas.json`, this.scan)
           .then(res => {
+            this.$message.success('Проверка запущена!');
             console.log('res', res);
+            console.log('scan', this.scan);
           })
-          .catch(e => console.log(e));
+          .catch(e => {
+            console.log(e);
+            this.$message.error('Произошла ошибка запуска проверки!');
+          });
       },
-
-      // удаление сайта
 
       // async getSites() {
       //   try {
@@ -208,6 +218,9 @@
       // },
       openSiteVerify(siteID) {
         return this.$router.push(`/verify/${siteID}`);
+      },
+      openReports(siteID) {
+        return this.$router.push(`/reports/${siteID}`);
       },
     },
     computed: {
