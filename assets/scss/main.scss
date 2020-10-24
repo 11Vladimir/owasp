@@ -1,9 +1,9 @@
 @import './commons.scss';
 
 .father__background {
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: 50%;
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  // background-position: 100%;
   background-color: #f1f1f1;
 }
 
@@ -11,7 +11,7 @@
   margin: 0 auto;
   display: flex;
   // justify-content: center;
-  min-width: 250px;
+  min-width: 240px;
   max-width: 1200px;
 }
 .content_center {
@@ -22,38 +22,17 @@
   margin-right: auto;
 }
 
-// html {
-//   line-height: $mainLineHeight;
-//   font-size: $mainFontSize;
-//   color: $mainFontColor;
-//   height: 100%;
-//   @media screen and (max-width: $desktopWidth) {
-//     font-size: 16px;
-//   }
-//   @media screen and (max-width: $tableWidth) {
-//     font-size: 15px;
-//   }
-//   @media screen and (max-width: $phoneWidth) {
-//     font-size: 14px;
-//   }
-// }
+.content_left {
+  text-align: left;
+  margin-left: auto;
+  margin-right: 0;
+}
 
-// body {
-//   font-family: $mainFont;
-//   font-size: $mainFontSize;
-//   font-weight: $mainFontWeight;
-//   -webkit-font-smoothing: antialiased;
-//   -moz-osx-font-smoothing: grayscale;
-//   margin: 0;
-//   padding: 0;
-//   background-color: #f7f7f7;
-// }
-
-// *,
-// *:before,
-// *:after {
-//   box-sizing: border-box;
-// }
+.content_right {
+  text-align: right;
+  margin-left: 0;
+  margin-right: auto;
+}
 
 h1,
 h2,
@@ -80,71 +59,6 @@ h1 {
 hr {
   border: 1px solid #d9d9d9;
 }
-// input,
-// textarea,
-// select,
-// button {
-//   border: 1px solid $border-base;
-// }
-
-// a {
-//   text-decoration: none;
-// }
-
-// ul,
-// li {
-//   list-style-type: none;
-//   margin: 0;
-//   padding: 0;
-// }
-
-// section,
-// .section {
-//   position: relative;
-//   padding: 40px 0;
-//   @media screen and (max-width: $desktopWidth) {
-//     padding: 36px 0;
-//   }
-//   @media screen and (max-width: $desktopWidth) {
-//     padding: 28px 0;
-//   }
-//   @media screen and (max-width: $desktopWidth) {
-//     padding: 20px 0;
-//   }
-// }
-
-// .wrapper {
-//   display: flex;
-//   flex-direction: column;
-//   min-height: 100vh;
-//   margin: 0 auto;
-// }
-
-// .wrapper-content {
-//   display: flex;
-//   flex-direction: column;
-//   min-height: 100vh;
-//   &.wrapper-content--fixed {
-//     margin-top: 80px;
-//   }
-// }
-
-// .container {
-//   width: 100%;
-//   flex: 0 0 auto;
-//   position: relative;
-//   max-width: $desktopWidth;
-//   margin: 0 auto;
-//   @media screen and (max-width: $smDesktopWidth) {
-//     max-width: $tableWidth;
-//   }
-//   @media screen and (max-width: $tableWidth) {
-//     max-width: $phoneWidth;
-//   }
-//   @media screen and (max-width: $phoneWidth) {
-//     max-width: $smPhoneWidth;
-//   }
-// }
 
 .radius {
   border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
@@ -152,13 +66,6 @@ hr {
 }
 .ant-form-item {
   margin-bottom: 0px;
-}
-
-button {
-  width: 200px;
-  position: relative;
-  // left: 50%;
-  // transform: translate(-50%, 0);
 }
 
 @media (max-width: 570.98px) {
@@ -221,6 +128,16 @@ p {
   .column-4,
   .column-5 {
     grid-template-columns: 1fr;
+  }
+}
+
+@media only screen and (min-width: 551px) and (max-width: 750px) {
+  .column-1,
+  .column-2,
+  .column-3,
+  .column-4,
+  .column-5 {
+    grid-template-columns: 1fr 1fr;
   }
 }
 // @media (min-width: 551) and (max-width: 800px) {

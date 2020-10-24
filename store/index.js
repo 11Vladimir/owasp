@@ -23,7 +23,7 @@ export const actions = {
         for (let key in res.data) {
           sitesArray.push({ ...res.data[key], id: key });
         }
-
+        console.log('sitesArray', sitesArray);
         commit('setSites', sitesArray);
       })
       .catch(e => console.log(e));

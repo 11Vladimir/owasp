@@ -2,33 +2,40 @@
   <section class="add-site">
     <div>
       <h1>ДОБАВИТЬ САЙТ</h1>
-      <div :style="{ padding: '24px', background: '#fff' }" class="radius">
-        <div>
+      <div>
+        <a-card class="radius">
           <a-form method="post" @submit.prevent="siteAdded">
-            <!-- @submit.prevent="siteAdded" -->
-            <a-form-item label="Название сайта">
-              <a-input v-model="site.title" allow-clear id="error" placeholder="Мой сайт" />
-            </a-form-item>
-            <a-form-item label="Адрес сайта">
-              <div style="margin-bottom: 16px">
-                <a-input v-model="site.host" allow-clear placeholder="mysite">
-                  <a-select slot="addonBefore" v-model="protocol" style="width: 90px">
+            <div>
+              <a-form-item label="Название сайта">
+                <a-input v-model="site.title" allow-clear id="error" placeholder="Мой сайт" />
+              </a-form-item>
+            </div>
+
+            <div>
+              <a-form-item label="Адрес сайта">
+                <a-input v-model="site.host" allow-clear placeholder="mysite.ru">
+                  <a-select slot="addonBefore" v-model="protocol">
                     <a-select-option value="http://"> http:// </a-select-option>
                     <a-select-option value="https://"> https:// </a-select-option>
                   </a-select>
-                  <a-select slot="addonAfter" v-model="domainZone" style="width: 80px">
+                  <!-- <a-select slot="addonAfter" v-model="domainZone">
                     <a-select-option value=".ru"> .ru </a-select-option>
                     <a-select-option value=".com"> .com </a-select-option>
                     <a-select-option value=".jp"> .jp </a-select-option>
                     <a-select-option value=".cn"> .cn </a-select-option>
                     <a-select-option value=".org"> .org </a-select-option>
-                  </a-select>
+                  </a-select> -->
                 </a-input>
+              </a-form-item>
+            </div>
+
+            <div class="column">
+              <div class="content_center">
+                <a-button type="primary" html-type="submit" :disabled="disabled"> Добавить сайт </a-button>
               </div>
-            </a-form-item>
-            <a-button type="primary" html-type="submit" :disabled="disabled"> Добавить сайт </a-button>
+            </div>
           </a-form>
-        </div>
+        </a-card>
       </div>
       <nuxt-link to="/">Вернуться назад</nuxt-link>
     </div>
@@ -62,7 +69,7 @@
     methods: {
       siteAdded(site) {
         this.site.key = uuidv4();
-        this.site.url = `${this.protocol}www.${this.site.host}${this.domainZone}`;
+        this.site.url = `${this.protocol}www.${this.site.host}`;
 
         this.$store.dispatch('addSite', this.site).then(() => {
           this.$router.push('/add-site');

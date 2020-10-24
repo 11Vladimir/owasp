@@ -13,10 +13,10 @@
           <div class="column column-2">
             <div>
               <p>
-                <b>{{ index + 1 }} {{ site.title }}</b>
+                <b>{{ index + 1 }} {{ site.title }}</b> / {{ site.host }}
               </p>
             </div>
-            <div>
+            <div class="content_left">
               <a-button type="link" @click="showModal(site.id, site.title)"> Удалить сайт </a-button>
               <a-modal
                 title="Удаление сайта"
@@ -25,9 +25,9 @@
                 @ok="handleOk"
                 @cancel="handleCancel"
               >
-                <p>
-                  Вы действительно хотите удалить сайт <b>{{ modal.siteTitle }}</b> из вашего списка сайтов? Все данные
-                  о сканировании атак будут утеряны!
+                <p class="content_center">
+                  Вы действительно хотите удалить сайт <b>{{ modal.siteTitle }}</b> <br />
+                  из вашего списка сайтов? Все данные о сканировании атак будут утеряны!
                 </p>
               </a-modal>
             </div>
@@ -50,16 +50,17 @@
                   <a-time-picker v-model="time1" type="time" placeholder="Выбор времени" style="width: 100%" />
                 </div>
 
-                <div>
-                  <a-button type="primary" @click="postScan(site.id)"> Запустить проверку </a-button>
+                <div class="content_left">
+                  <a-button type="primary" @click="postScan(site.id)" :disabled="disabled">
+                    Запустить проверку
+                  </a-button>
                 </div>
               </div>
             </a-form>
             <div class="column">
-              <a-button type="link" @click.prevent="openReports(site.id)"
-                >Отчетов о сканировании: {{ site.scanReports }}
-              </a-button>
-              <!-- <nuxt-link to="/reports">Отчетов о сканировании: {{ site.scanReports }}</nuxt-link> -->
+              <div class="content_right">
+                <a-button type="link" @click.prevent="openReports(site.id)">Отчетов о сканировании: </a-button>
+              </div>
             </div>
           </div>
 
@@ -70,7 +71,7 @@
                 владеете данным сайтом.
               </p>
             </div>
-            <div>
+            <div class="content_left">
               <a-button type="primary" @click.prevent="openSiteVerify(site.id)"> Подтверждение прав </a-button>
             </div>
           </div>
@@ -114,6 +115,7 @@
         option: [],
         date1: undefined,
         time1: undefined,
+        disabled: false,
         modal: {
           ModalText: '',
           visible: false,
@@ -140,7 +142,6 @@
             this.modal.visible = false;
             this.modal.confirmLoading = false;
             this.$message.success('Сайт удален');
-            sites();
           })
           .catch(e => {
             console.log(e);
@@ -178,13 +179,19 @@
         return this.$axios
           .post(`https://owqsp-nuxt.firebaseio.com/sites/${siteID}/scanDatas.json`, this.scan)
           .then(res => {
+            this.disabled = true;
             this.$message.success('Проверка запущена!');
-            console.log('res', res);
+            console.log('res', res.data);
             console.log('scan', this.scan);
+
+            setTimeout(() => {
+              return (this.disabled = false);
+            }, 1500);
           })
           .catch(e => {
             console.log(e);
             this.$message.error('Произошла ошибка запуска проверки!');
+            return (this.disabled = true);
           });
       },
 

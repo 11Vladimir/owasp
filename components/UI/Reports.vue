@@ -18,7 +18,7 @@
               </p>
             </div>
 
-            <div>
+            <div class="content_left">
               <a-popconfirm
                 title="Вы действительно хотите удалить этот отчет?"
                 ok-text="Да"
@@ -33,7 +33,7 @@
 
           <h3>Обнаружено уязвимостей</h3>
           <a-table :columns="columns" :data-source="data">
-            <a slot="name" slot-scope="text">{{ text }}</a>
+            <a slot="info" slot-scope="text">{{ text }}</a>
           </a-table>
         </a-card>
       </div>
@@ -47,51 +47,51 @@
   const columns = [
     {
       title: 'High',
-      dataIndex: 'name',
-      key: 'name',
-      scopedSlots: { customRender: 'name' },
+      dataIndex: 'high',
+      key: 'high',
     },
     {
       title: 'Medium',
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'medium',
+      key: 'medium',
       // width: 80,
     },
     {
       title: 'Low',
-      dataIndex: 'address',
-      key: 'address 1',
+      dataIndex: 'low',
+      key: 'low',
       ellipsis: true,
     },
     {
       title: 'Info',
-      dataIndex: 'address',
-      key: 'address 2',
-      ellipsis: true,
+      dataIndex: 'info',
+      key: 'info',
+      scopedSlots: { customRender: 'info' },
+      // ellipsis: true,
     },
   ];
 
   const data = [
     {
       key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park, New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
+      high: 5,
+      low: 32,
+      medium: 10,
+      info: 'Узнать подробнее...',
     },
     {
       key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 2 Lake Park, London No. 2 Lake Park',
-      tags: ['loser'],
+      high: 1,
+      low: 12,
+      medium: 43,
+      info: 'Узнать подробнее...',
     },
     {
       key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park, Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
+      high: 3,
+      low: 43,
+      medium: 23,
+      info: 'Узнать подробнее...',
     },
   ];
 

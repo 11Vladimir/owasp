@@ -1,10 +1,10 @@
 <template>
   <section class="verify">
     <div>
-      <h1>Подтверждение прав владения сайтом {{ site.title }}</h1>
+      <h1>Подтверждение прав</h1>
       <p>
-        Прежде, чем получить возможность сканирования сайта на уязвимости, Вам необходимо подтвердить, что вы владеете
-        данным сайтом. Мы можем предложить два способа подтверждения.
+        Прежде, чем получить возможность сканирования сайта <b>{{ site.host }}</b> на уязвимости, Вам необходимо
+        подтвердить, что вы владеете данным сайтом. Мы можем предложить два способа подтверждения.
       </p>
 
       <div class="column column-1">
@@ -22,7 +22,9 @@
                 <p class="onVerifity">Права владения сайтом подтверждены!</p>
               </div>
               <div v-else class="column">
-                <a-button type="primary" v-on:click="verifyDNS()" :disabled="disabled">Подтвердить</a-button>
+                <div>
+                  <a-button type="primary" v-on:click="verifyDNS()" :disabled="disabled">Подтвердить</a-button>
+                </div>
               </div>
             </div>
           </a-card>
@@ -41,7 +43,9 @@
                 <p class="onVerifity">Права владения сайтом подтверждены!</p>
               </div>
               <div v-else class="column">
-                <a-button type="primary" v-on:click="verifyWeb()" :disabled="disabled">Подтвердить</a-button>
+                <div>
+                  <a-button type="primary" v-on:click="verifyWeb()" :disabled="disabled">Подтвердить</a-button>
+                </div>
               </div>
             </div>
           </a-card>
